@@ -1,0 +1,11 @@
+{
+  "name": "compressjpeg",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/yunseul-light/compressjpeg.git",
+  "author": "Lucas <kjk727@me.com>",
+  "license": "MIT",
+  "dependencies": {
+    "mozjpeg": "^6.0.1"
+  }
+}
