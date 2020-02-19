@@ -2,6 +2,7 @@ const { execFile } = require("child_process");
 const mozjpeg = require("mozjpeg");
 let path = require("path");
 let fs = require("fs");
+const pngToJpeg = require("png-to-jpeg");
 
 const OUT_FILE = "-outfile";
 const QUALITY = "-quality";
@@ -18,13 +19,10 @@ if (!process.argv[2]) {
 }
 
 files.forEach(file => {
+  let inputAddress = path.resolve(__dirname, "../img") + "\\" + file;
+  let outputAddress = path.resolve(__dirname, "../img/compress") + "\\" + file;
+
   if (file.search(".jpg") > -1) {
-    console.log(file);
-
-    let inputAddress = path.resolve(__dirname, "../img") + "\\" + file;
-    let outputAddress =
-      path.resolve(__dirname, "../img/compress") + "\\" + file;
-
     execFile(
       mozjpeg,
       [OUT_FILE, outputAddress, QUALITY, quality, inputAddress],
@@ -32,6 +30,11 @@ files.forEach(file => {
         console.log("Image minified. Output  : " + outputAddress);
         console.log("Error : " + err);
       }
+    );
+  } else if (file.search(".png") > -1) {
+    let buffer = fs.readFileSync(inputAddress);
+    pngToJpeg({ quality: quality })(buffer).then(output =>
+      fs.writeFileSync(outputAddress.replace(".png", ".jpg"), output)
     );
   }
 });
