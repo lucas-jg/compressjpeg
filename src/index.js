@@ -22,7 +22,11 @@ files.forEach(file => {
   let inputAddress = path.resolve(__dirname, "../img") + "\\" + file;
   let outputAddress = path.resolve(__dirname, "../img/compress") + "\\" + file;
 
-  if (file.search(".jpg") > -1) {
+  if (
+    file.search(".jpg") > -1 ||
+    file.search(".jpeg") > -1 ||
+    file.search(".JPG") > -1
+  ) {
     execFile(
       mozjpeg,
       [OUT_FILE, outputAddress, QUALITY, quality, inputAddress],
@@ -31,7 +35,7 @@ files.forEach(file => {
         console.log("Error : " + err);
       }
     );
-  } else if (file.search(".png") > -1) {
+  } else if ((file.search(".png") > -1) | (file.search(".PNG") > -1)) {
     let buffer = fs.readFileSync(inputAddress);
     pngToJpeg({ quality: quality })(buffer).then(output =>
       fs.writeFileSync(outputAddress.replace(".png", ".jpg"), output)
